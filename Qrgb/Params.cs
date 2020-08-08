@@ -12,8 +12,8 @@ namespace Qrgb
 
         public static ushort[] RGBGap = { 255,255,255};
 
-        public static ushort[] BitsPerColour = { 2,3,2 };
-        public static ushort TotalBits = 7;
+        public static ushort[] BitsPerColour = { 3,3,2 };
+        public static ushort TotalBits = 8;
 
         public static void Calculate()
         {
