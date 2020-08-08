@@ -24,7 +24,15 @@ namespace Qrgb
             }
         }
 
-        public bool[] GetData()
+        public override string ToString()
+        {
+            byte[] Data = Conversions.BoolSetToByte(ToData());
+            char[] CharSet = Data.Select(x => (char)x).ToArray();
+
+            return new string(CharSet);
+        }
+
+        public bool[] ToData()
         {
             bool[] Data = new bool[Squares.Length * Params.TotalBits];
 
@@ -36,7 +44,7 @@ namespace Qrgb
             return Data;
         }
 
-        public void SaveOut(string Path = "./image.png", int width = 400, int height = 400)
+        public void Save(string Path = "./image.png", int width = 400, int height = 400)
         {
             int Len = (int)Math.Ceiling(Math.Sqrt(Squares.Length));
 
