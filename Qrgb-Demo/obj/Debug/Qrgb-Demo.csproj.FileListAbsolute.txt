@@ -1,0 +1,10 @@
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\bin\Debug\Qrgb-Demo.exe.config
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\bin\Debug\Qrgb-Demo.exe
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\bin\Debug\Qrgb-Demo.pdb
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\bin\Debug\Qrgb.dll
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\bin\Debug\Qrgb.pdb
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\obj\Debug\Qrgb-Demo.csprojAssemblyReference.cache
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\obj\Debug\Qrgb-Demo.csproj.CoreCompileInputs.cache
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\obj\Debug\Qrgb-Demo.csproj.CopyComplete
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\obj\Debug\Qrgb-Demo.exe
+C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb-Demo\obj\Debug\Qrgb-Demo.pdb
