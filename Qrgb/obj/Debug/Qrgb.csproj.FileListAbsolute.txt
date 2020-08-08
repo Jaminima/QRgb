@@ -1,6 +1,0 @@
-C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb\bin\Debug\Qrgb.dll
-C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb\bin\Debug\Qrgb.pdb
-C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb\obj\Debug\Qrgb.csprojAssemblyReference.cache
-C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb\obj\Debug\Qrgb.csproj.CoreCompileInputs.cache
-C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb\obj\Debug\Qrgb.dll
-C:\Users\oscar\OneDrive - University of Plymouth\Programming\C#\Qrgb\Qrgb\obj\Debug\Qrgb.pdb
