@@ -13,11 +13,9 @@ namespace Qrgb_Demo
         {
             Params.Calculate();
 
-            Colour C = new Colour(230, 126, 127);
-            bool[] D = C.ToDataBits();
+            QRCode C = new QRCode("I love you");
 
-            Colour nC = new Colour(D);
-            bool[] nD = nC.ToDataBits();
+            C.SaveOut();
         }
     }
 }
