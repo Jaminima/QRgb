@@ -54,9 +54,9 @@ namespace Qrgb
 
             Bitmap image = new Bitmap(imageSize, imageSize, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            DrawAlignmentSquare(0, 0, ref image, squareSize);
-            DrawAlignmentSquare(Len*2+6, 0, ref image, squareSize);
-            DrawAlignmentSquare(0, Len * 2 + 6, ref image, squareSize);
+            DrawAlignmentSquare(0, 0, Colour.Red, ref image, squareSize);
+            DrawAlignmentSquare(Len*2+6, 0, Colour.Green, ref image, squareSize);
+            DrawAlignmentSquare(0, Len * 2 + 6, Colour.Blue, ref image, squareSize);
 
             Colour C;
             for (int i = 0,x=0,y=0; i < Squares.Length; i++)
@@ -70,11 +70,11 @@ namespace Qrgb
             image.Save(Path);
         }
 
-        private void DrawAlignmentSquare(int x,int y, ref Bitmap image, int squareSize = 1)
+        private void DrawAlignmentSquare(int x,int y, Colour coreColour, ref Bitmap image, int squareSize = 1)
         {
-            Colour C = new Colour(255, 255, 255);
+            Colour C = Colour.White;
 
-            DrawSquare((x + 2)/2, (y + 2)/2, C, ref image, squareSize);
+            DrawSquare((x + 2)/2, (y + 2)/2, coreColour, ref image, squareSize);
 
             squareSize /= 2;
 
