@@ -11,13 +11,17 @@ namespace Qrgb_Demo
     {
         static void Main(string[] args)
         {
-            Params.Calculate();
+            //Params.Calculate();
 
-            QRCode C = new QRCode("Sorry for everything, i do love you~djdsnhdsfhsd ifhsweikf whfiue hfieh fb  k IU GHDIJR HGIERH FIHB IHHGIHWIJHrsedhfusdhfuhsdhfusehfhsdhfhu");
+            //QRCode C = new QRCode(@"This is a test! Hopefully it wont poo itself. But only time will tell ;)");
 
-            string S = C.ToString();
+            //byte[] D = Conversions.BoolSetToByte(C.ToData());
 
-            C.Save(squareSize:50);
+            //C.Save(squareSize:2);
+
+            QRCode L = QRCode.Load();
+
+            string S = L.ToString();
         }
     }
 }

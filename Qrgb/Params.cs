@@ -16,8 +16,8 @@ namespace Qrgb
         public static ushort[] RGBGap = { 255,255,255};
 
         //Each colour shouldnt have more than PerColourEncodingBits bits
-        public static ushort[] BitsPerColour = { 6,6,4 };
-        public const ushort TotalBits = 16;
+        public static ushort[] BitsPerColour = { 3,3,2 };
+        public const ushort TotalBits = 8;
 
         public static void Calculate()
         {

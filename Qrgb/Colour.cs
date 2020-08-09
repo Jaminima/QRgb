@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,13 @@ namespace Qrgb
         public ushort R { get { return Values[0]; } set { Values[0] = value; } }
         public ushort G { get { return Values[1]; } set { Values[1] = value; } }
         public ushort B { get { return Values[2]; } set { Values[2] = value; } }
+
+        public Colour(Color C)
+        {
+            R = C.R;
+            G = C.G;
+            B = C.B;
+        }
 
         public Colour(ushort r, ushort g, ushort b)
         {

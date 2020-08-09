@@ -4,12 +4,31 @@ using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Qrgb
 {
     public class QRCode
     {
         public Colour[] Squares;
+
+        public QRCode(List<Colour> Squares)
+        {
+            this.Squares = Squares.ToArray();
+
+            Colour[] EncodingBitColours = this.Squares.Take(Params.PerColourEncodingBits * 3).ToArray();
+
+            for (int i = 0; i < 3; i++) {
+                Colour[] ColBits = EncodingBitColours.Skip(i * Params.PerColourEncodingBits).Take(Params.PerColourEncodingBits).ToArray();
+                
+                byte B = 0;
+                for (int j = 0; j < Params.PerColourEncodingBits; j++)
+                    if (ColBits[j].B < 125 && ColBits[j].R < 125) B |= (byte)(1 << Params.PerColourEncodingBits - 1 - j);
+
+                Params.BitsPerColour[i] = B;
+            }
+        }
+
         public QRCode(string Data):this(Data.ToArray().Select(x=>(byte) x).ToArray()){}
 
         public QRCode(byte[] Data):this(Conversions.ByteToBool(Data)) { }
@@ -64,7 +83,7 @@ namespace Qrgb
 
             int imageSize = ((Len+6) * squareSize);
 
-            Bitmap image = new Bitmap(imageSize, imageSize, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            Bitmap image = new Bitmap(imageSize, imageSize, PixelFormat.Format24bppRgb);
 
             DrawAlignmentSquare(0, 0, Colour.Red, ref image, squareSize);
             DrawAlignmentSquare(Len*2+6, 0, Colour.Green, ref image, squareSize);
@@ -79,7 +98,7 @@ namespace Qrgb
                 DrawSquare(x, y, C, ref image, squareSize);
             }
 
-            image.Save(Path);
+            image.Save(Path,ImageFormat.Png);
         }
 
         private void DrawAlignmentSquare(int x,int y, Colour coreColour, ref Bitmap image, int squareSize = 1)
@@ -111,9 +130,40 @@ namespace Qrgb
             }
         }
 
-        public void Load(string Path = "./image.png")
+        public static QRCode Load(string Path = "./image.png")
         {
             Bitmap image = new Bitmap(Path);
+
+            int squareSize = 0;
+
+            while (image.GetPixel(squareSize, 0).GetBrightness()==1) { squareSize++; }
+            squareSize /= 6;
+
+            Params.RGBmax[0] = image.GetPixel(squareSize * 3, squareSize*3).R;
+            Params.RGBmax[1] = image.GetPixel(image.Width - (squareSize * 3), squareSize * 3).G;
+            Params.RGBmax[2] = image.GetPixel(squareSize * 3, image.Width - (squareSize * 3)).B;
+
+            Params.Calculate();
+
+            List<Colour> Sqrs = new List<Colour>();
+            Color Temp;
+
+            squareSize *= 2;
+
+            int bodySize = (image.Width / squareSize)-6;
+
+            for (int i = 0, x = 0, y = 0; true; i++)
+            {
+                x = ((i % bodySize) + 3) * squareSize;
+                y = ((i / bodySize) + 3) * squareSize;
+
+                Temp = image.GetPixel(x, y);
+
+                if (Temp.GetBrightness() > 0) Sqrs.Add(new Colour(Temp));
+                else break;
+            }
+            
+            return new QRCode(Sqrs);
         }
     }
 }
