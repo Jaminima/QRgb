@@ -45,11 +45,12 @@ namespace Qrgb
 
         public bool[] ToData()
         {
-            bool[] Data = new bool[Squares.Length * Params.TotalBits];
+            int EncodingHop = Params.PerColourEncodingBits * 3;
+            bool[] Data = new bool[(Squares.Length-EncodingHop) * Params.TotalBits];
 
-            for (int i = 0; i < Squares.Length; i++)
+            for (int i = 0; i < Squares.Length-EncodingHop; i++)
             {
-                Squares[i].ToDataBits().CopyTo(Data, i * Params.TotalBits);
+                Squares[i+EncodingHop].ToDataBits().CopyTo(Data, i * Params.TotalBits);
             }
 
             return Data;
