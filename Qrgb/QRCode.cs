@@ -46,26 +46,57 @@ namespace Qrgb
 
         public void Save(string Path = "./image.png", int squareSize=1)
         {
+            squareSize *= 2;
+
             int Len = (int)Math.Ceiling(Math.Sqrt(Squares.Length));
 
-            Bitmap image = new Bitmap(Len*squareSize,Len*squareSize,System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            int imageSize = ((Len+6) * squareSize);
+
+            Bitmap image = new Bitmap(imageSize, imageSize, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            DrawAlignmentSquare(0, 0, ref image, squareSize);
+            DrawAlignmentSquare(Len*2+6, 0, ref image, squareSize);
+            DrawAlignmentSquare(0, Len * 2 + 6, ref image, squareSize);
 
             Colour C;
-            int x = 0, y = 0;
-            for (int i = 0; i < Squares.Length; i++)
+            for (int i = 0,x=0,y=0; i < Squares.Length; i++)
             {
-                x = (i % Len)*squareSize; y = (i / Len)*squareSize;
+                x = ((i % Len) + 3); y = ((i / Len) + 3);
                 C = Squares[i];
 
-                for (int X = x, Y = y; Y < y + squareSize;)
-                {
-                    image.SetPixel(X, Y, Color.FromArgb(C.R, C.G, C.B));
-                    X++;
-                    if (X >= x + squareSize) { X = x;Y++; }
-                }
+                DrawSquare(x, y, C, ref image, squareSize);
             }
 
             image.Save(Path);
+        }
+
+        private void DrawAlignmentSquare(int x,int y, ref Bitmap image, int squareSize = 1)
+        {
+            Colour C = new Colour(255, 255, 255);
+
+            DrawSquare((x + 2)/2, (y + 2)/2, C, ref image, squareSize);
+
+            squareSize /= 2;
+
+            for (int i = 0; i < 5; i++) { 
+                DrawSquare(x + i, y, C, ref image, squareSize);
+                DrawSquare(x + i, y+5, C, ref image, squareSize);
+
+                DrawSquare(x, y+i, C, ref image, squareSize);
+                DrawSquare(x + 5, y + i, C, ref image, squareSize);
+            }
+            DrawSquare(x + 5, y + 5, C, ref image, squareSize);
+        }
+
+        private void DrawSquare(int x,int y, Colour C, ref Bitmap image, int squareSize = 1)
+        {
+            x *= squareSize; y *= squareSize;
+            for (int X = x, Y = y; Y < y + squareSize;)
+            {
+                image.SetPixel(X, Y, Color.FromArgb(C.R, C.G, C.B));
+                X++;
+                if (X >= x + squareSize) { X = x; Y++; }
+            }
         }
 
         public void Load(string Path = "./image.png")

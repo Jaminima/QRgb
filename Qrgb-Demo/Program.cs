@@ -13,7 +13,7 @@ namespace Qrgb_Demo
         {
             Params.Calculate();
 
-            QRCode C = new QRCode("Sorry for everything");
+            QRCode C = new QRCode("Sorry for everything, i do love you~djdsnhdsfhsd ifhsweikf whfiue hfieh fb  k IU GHDIJR HGIERH FIHB IHHGIHWIJHrsedhfusdhfuhsdhfusehfhsdhfhu");
 
             string S = C.ToString();
 
