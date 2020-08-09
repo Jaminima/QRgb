@@ -136,7 +136,7 @@ namespace Qrgb
 
             int squareSize = 0;
 
-            while (image.GetPixel(squareSize, 0).GetBrightness()==1) { squareSize++; }
+            while (image.GetPixel(squareSize, 0).GetBrightness()>0.8f) { squareSize++; }
             squareSize /= 6;
 
             Params.RGBmax[0] = image.GetPixel(squareSize * 3, squareSize*3).R;
@@ -152,15 +152,13 @@ namespace Qrgb
 
             int bodySize = (image.Width / squareSize)-6;
 
-            for (int i = 0, x = 0, y = 0; true; i++)
+            for (int i = 0, x = 0, y = 0; y<=(bodySize+1)*squareSize; i++)
             {
                 x = ((i % bodySize) + 3) * squareSize;
                 y = ((i / bodySize) + 3) * squareSize;
 
                 Temp = image.GetPixel(x, y);
-
-                if (Temp.GetBrightness() > 0) Sqrs.Add(new Colour(Temp));
-                else break;
+                Sqrs.Add(new Colour(Temp));
             }
             
             return new QRCode(Sqrs);
