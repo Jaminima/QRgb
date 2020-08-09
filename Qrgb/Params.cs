@@ -8,13 +8,16 @@ namespace Qrgb
 {
     public static class Params
     {
+        //Max Is 8 Bits
+        public const ushort PerColourEncodingBits = 3;
+
         public static ushort[] RGBmax = { 255,255,255 };
 
         public static ushort[] RGBGap = { 255,255,255};
 
-        //Each colour shouldnt have more than 8 bits
+        //Each colour shouldnt have more than PerColourEncodingBits bits
         public static ushort[] BitsPerColour = { 3,3,2 };
-        public static ushort TotalBits = 8;
+        public const ushort TotalBits = 8;
 
         public static void Calculate()
         {
