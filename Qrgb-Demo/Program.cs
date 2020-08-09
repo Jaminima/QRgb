@@ -13,11 +13,11 @@ namespace Qrgb_Demo
         {
             Params.Calculate();
 
-            QRCode C = new QRCode("You are, the most beautiful thing, in, the, entire, world! <3");
+            QRCode C = new QRCode("Sorry for everything");
 
             string S = C.ToString();
 
-            C.Save();
+            C.Save(squareSize:50);
         }
     }
 }

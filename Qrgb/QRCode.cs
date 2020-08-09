@@ -44,20 +44,33 @@ namespace Qrgb
             return Data;
         }
 
-        public void Save(string Path = "./image.png", int width = 400, int height = 400)
+        public void Save(string Path = "./image.png", int squareSize=1)
         {
             int Len = (int)Math.Ceiling(Math.Sqrt(Squares.Length));
 
-            Bitmap image = new Bitmap(Len,Len,System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            Bitmap image = new Bitmap(Len*squareSize,Len*squareSize,System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
             Colour C;
+            int x = 0, y = 0;
             for (int i = 0; i < Squares.Length; i++)
             {
+                x = (i % Len)*squareSize; y = (i / Len)*squareSize;
                 C = Squares[i];
-                image.SetPixel(i%Len, i/Len, Color.FromArgb(C.R,C.G,C.B));
+
+                for (int X = x, Y = y; Y < y + squareSize;)
+                {
+                    image.SetPixel(X, Y, Color.FromArgb(C.R, C.G, C.B));
+                    X++;
+                    if (X >= x + squareSize) { X = x;Y++; }
+                }
             }
 
             image.Save(Path);
+        }
+
+        public void Load(string Path = "./image.png")
+        {
+            Bitmap image = new Bitmap(Path);
         }
     }
 }
