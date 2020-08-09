@@ -8,7 +8,10 @@ namespace Qrgb
 {
     public class Colour
     {
-        public static Colour Red = new Colour(255, 0, 0), Green = new Colour(0, 255, 0), Blue = new Colour(0, 0, 255), White = new Colour(255, 255, 255);
+        public static Colour Red = new Colour(255, 0, 0),
+            Green = new Colour(0, 255, 0),
+            Blue = new Colour(0, 0, 255),
+            White = new Colour(255, 255, 255);
 
         public ushort[] Values = { 0, 0, 0 };
 

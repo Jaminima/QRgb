@@ -16,11 +16,21 @@ namespace Qrgb
 
         public QRCode(bool[] Data)
         {
-            Squares = new Colour[Data.Length / Params.TotalBits];
+            Squares = new Colour[(Data.Length / Params.TotalBits) + 9];
 
-            for (int i = 0; i < Squares.Length; i++)
+            for (int i = 0; i < Squares.Length-9; i++)
             {
-                Squares[i] = new Colour(Data.Skip(i* Params.TotalBits).Take(Params.TotalBits).ToArray());
+                Squares[i+9] = new Colour(Data.Skip(i* Params.TotalBits).Take(Params.TotalBits).ToArray());
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                bool[] Bits = Conversions.ByteToBool((byte)Params.BitsPerColour[i]);
+                for (int j = 0; j < 3; j++)
+                {
+                    if (Bits[j + 5]) Squares[i * 3 + j] = Colour.Red;
+                    else Squares[i * 3 + j] = Colour.White;
+                }
             }
         }
 
