@@ -9,7 +9,7 @@ namespace Demo
         private static void Main(string[] args)
         {
             QR qR = new QR("I Like Broccoli, So Wery Very Much :)", 3);
-            qR.Save();
+            qR.Save(squareSize:50, blackBorder:3);
         }
 
         #endregion Methods

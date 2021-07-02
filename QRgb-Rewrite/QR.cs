@@ -1,5 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Drawing.Processing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -96,14 +98,22 @@ namespace QRgb
             }
         }
 
-        public void Save(string path = "./image.png")
+        public void Save(string path = "./image.png", int squareSize = 1, int blackBorder = 0)
         {
-            Image<Rgb24> img = new Image<Rgb24>(wh, wh);
+            Image<Rgb24> img = new Image<Rgb24>(wh*squareSize, wh*squareSize);
+
+            Pen borderPen = new Pen(Color.Black, blackBorder);
 
             for (int x = 0, y = 0, i = 0; i < squareCount; i++)
             {
                 Colour c = colours[x, y];
-                img[x, y] = new Rgb24((byte)c.R, (byte)c.G, (byte)c.B);
+
+                Rectangle r = new Rectangle(x * squareSize, y * squareSize, squareSize, squareSize);
+
+                img.Mutate(x =>{
+                    x.Fill(new Rgb24((byte)c.R, (byte)c.G, (byte)c.B), r);
+                    x.Draw(borderPen, r);
+                    }) ;
 
                 x++;
                 if (x == wh) { x = 0; y++; }
