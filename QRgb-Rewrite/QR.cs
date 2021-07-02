@@ -100,9 +100,10 @@ namespace QRgb
 
         public void Save(string path = "./image.png", int squareSize = 1, int blackBorder = 0)
         {
-            Image<Rgb24> img = new Image<Rgb24>(wh*squareSize, wh*squareSize);
+            int imgwh = (wh * squareSize) + (blackBorder/2);
+            Image<Rgb24> img = new Image<Rgb24>(imgwh, imgwh);
 
-            Pen borderPen = new Pen(Color.Black, blackBorder);
+            Pen borderPen = blackBorder > 0 ? new Pen(Color.Black, blackBorder) : new Pen(Color.Black,1);
 
             for (int x = 0, y = 0, i = 0; i < squareCount; i++)
             {
@@ -112,7 +113,7 @@ namespace QRgb
 
                 img.Mutate(x =>{
                     x.Fill(new Rgb24((byte)c.R, (byte)c.G, (byte)c.B), r);
-                    x.Draw(borderPen, r);
+                    if (blackBorder > 0) x.Draw(borderPen, r);
                     }) ;
 
                 x++;
