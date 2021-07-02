@@ -1,14 +1,17 @@
-﻿using System;
-using QRgb;
+﻿using QRgb;
 
 namespace Demo
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        #region Methods
+
+        private static void Main(string[] args)
         {
-            QR qR = new QR("I Like Broccoli, So Wery Very Much :)",1);
+            QR qR = new QR("I Like Broccoli, So Wery Very Much :)", 3);
             qR.Save();
         }
+
+        #endregion Methods
     }
 }

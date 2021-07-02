@@ -1,12 +1,18 @@
-﻿using System;
-
-namespace QRgb
+﻿namespace QRgb
 {
     public class Colour
     {
-        public int R=0, G=0, B=0;
+        #region Fields
 
-        public Colour() { }
+        public int R = 0, G = 0, B = 0;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public Colour()
+        {
+        }
 
         public Colour(int r, int g, int b)
         {
@@ -14,5 +20,7 @@ namespace QRgb
             G = g;
             B = b;
         }
+
+        #endregion Constructors
     }
 }
