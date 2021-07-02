@@ -12,14 +12,60 @@ namespace QRgb
     {
         #region Fields
 
-        public const ushort Channels = 3;
-        public readonly ushort bitsPerChannel = 1;
-        public readonly int squareCount = 0, wh = 0, bitCount = 0;
-        public Colour[,] colours;
+        private Colour[,] colours;
 
         #endregion Fields
 
-        #region Constructors
+        #region Methods
+
+        private static bool[] ByteArrToBoolArr(byte[] data)
+        {
+            IEnumerable<bool[]> bData = data.Select(x =>
+            {
+                BitArray arr = new BitArray(new byte[] { x });
+                bool[] bitarr = new bool[arr.Length];
+                arr.CopyTo(bitarr, 0);
+                Array.Reverse(bitarr);
+                return bitarr;
+            });
+            bool[] bitArray = bData.SelectMany(x => x).ToArray();
+            return bitArray;
+        }
+
+        private int GetByteSegment(int bitI, bool[] data)
+        {
+            int value = 0;
+
+            for (int i = 0; i < bitsPerChannel; i++)
+            {
+                if (bitI + i < data.Length)
+                    value += data[bitI + i] ? (int)Math.Pow(2, i) : 0;
+            }
+
+            return value;
+        }
+
+        private Colour GetColour(int bitI, bool[] data)
+        {
+            int r = GetByteSegment(bitI, data);
+            bitI += bitsPerChannel;
+            int g = GetByteSegment(bitI, data);
+            bitI += bitsPerChannel;
+            int b = GetByteSegment(bitI, data);
+
+            int maxWithBits = (int)Math.Pow(2, bitsPerChannel - 1);
+            int stepMul = 255 / maxWithBits;
+
+            Colour c = new Colour(r * stepMul, g * stepMul, b * stepMul);
+
+            return c;
+        }
+
+        #endregion Methods
+
+        public const ushort Channels = 3;
+        public readonly ushort bitsPerChannel = 1;
+        public readonly int squareCount = 0, wh = 0, bitCount = 0;
 
         public QR(string str, ushort bitsPerChannel = 1) : this(Encoding.UTF8.GetBytes(str), bitsPerChannel)
         {
@@ -50,53 +96,6 @@ namespace QRgb
             }
         }
 
-        #endregion Constructors
-
-        #region Methods
-
-        public static bool[] ByteArrToBoolArr(byte[] data)
-        {
-            IEnumerable<bool[]> bData = data.Select(x =>
-            {
-                BitArray arr = new BitArray(new byte[] { x });
-                bool[] bitarr = new bool[arr.Length];
-                arr.CopyTo(bitarr, 0);
-                Array.Reverse(bitarr);
-                return bitarr;
-            });
-            bool[] bitArray = bData.SelectMany(x => x).ToArray();
-            return bitArray;
-        }
-
-        public int GetByteSegment(int bitI, bool[] data)
-        {
-            int value = 0;
-
-            for (int i = 0; i < bitsPerChannel; i++)
-            {
-                if (bitI + i < data.Length)
-                    value += data[bitI + i] ? (int)Math.Pow(2, i) : 0;
-            }
-
-            return value;
-        }
-
-        public Colour GetColour(int bitI, bool[] data)
-        {
-            int r = GetByteSegment(bitI, data);
-            bitI += bitsPerChannel;
-            int g = GetByteSegment(bitI, data);
-            bitI += bitsPerChannel;
-            int b = GetByteSegment(bitI, data);
-
-            int maxWithBits = (int)Math.Pow(2, bitsPerChannel - 1);
-            int stepMul = 255 / maxWithBits;
-
-            Colour c = new Colour(r * stepMul, g * stepMul, b * stepMul);
-
-            return c;
-        }
-
         public void Save(string path = "./image.png")
         {
             Image<Rgb24> img = new Image<Rgb24>(wh, wh);
@@ -112,7 +111,5 @@ namespace QRgb
 
             img.SaveAsPng(path);
         }
-
-        #endregion Methods
     }
 }
