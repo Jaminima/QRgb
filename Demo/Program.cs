@@ -8,7 +8,7 @@ namespace Demo
 
         private static void Main(string[] args)
         {
-            QR qR = new QR("I Like Broccoli, So Wery Very Much :)", 3);
+            QR qR = new QR("I Like Broccoli, So Wery Very Much :)", 1);
             qR.Save(squareSize:50, blackBorder:3);
         }
 
