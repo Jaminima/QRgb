@@ -3,9 +3,6 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace QRgb
@@ -19,33 +16,6 @@ namespace QRgb
         #endregion Fields
 
         #region Methods
-
-        private static bool[] ByteArrToBoolArr(byte[] data)
-        {
-            IEnumerable<bool[]> bData = data.Select(x =>
-            {
-                BitArray arr = new BitArray(new byte[] { x });
-                bool[] bitarr = new bool[arr.Length];
-                arr.CopyTo(bitarr, 0);
-                Array.Reverse(bitarr);
-                return bitarr;
-            });
-            bool[] bitArray = bData.SelectMany(x => x).ToArray();
-            return bitArray;
-        }
-
-        private static byte[] ConvertBoolArrayToByte(bool[] source)
-        {
-            byte[] result = new byte[(int)Math.Ceiling((double)source.Length / 8)];
-
-            for (int i = 0; i < source.Length; i++)
-            {
-                if (source[i])
-                    result[i / 8] |= (byte)(1 << (7 - (i % 8)));
-            }
-
-            return result;
-        }
 
         private static int BiasedRound(float val, float bound = 0.2f)
         {
@@ -152,7 +122,7 @@ namespace QRgb
 
         public QR(byte[] data, ushort bitsPerChannel = 1)
         {
-            bool[] bitArray = ByteArrToBoolArr(data);
+            bool[] bitArray = Conversions.ByteArrToBoolArr(data);
 
             this.bitsPerChannel = bitsPerChannel;
 
@@ -214,14 +184,14 @@ namespace QRgb
             for (int x = 0, y = 0, bitI = 0; y < wh; bitI += bitStep)
             {
                 Colour c = colours[y, x];
-                if (c!=null)
+                if (c != null)
                     ConvertColourToBits(c, bitI, ref bitData);
 
                 x++;
                 if (x == wh) { x = 0; y++; }
             }
 
-            byte[] bytes = ConvertBoolArrayToByte(bitData);
+            byte[] bytes = Conversions.ConvertBoolArrayToByte(bitData);
 
             return bytes;
         }
