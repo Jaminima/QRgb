@@ -7,7 +7,7 @@ namespace QRgb
     {
         #region Fields
 
-        private const float EdgeMin = 0.8f;
+        private const float EdgeMin = 0.95f;
         private const float MaxLinear = 255 * 3;
         private const float MaxLinearSum = MaxLinear * 5;
         private const int MinGap = 20;

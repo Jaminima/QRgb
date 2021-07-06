@@ -54,7 +54,7 @@ namespace QRgb
             for (int i = 0; i < bitsPerChannel; i++)
             {
                 if (bitI + i < data.Length)
-                    value += data[bitI + i] ? (int)Math.Pow(2, i) : 0;
+                    value += data[bitI + i] ? (int)Math.Pow(2, bitsPerChannel - 1 - i) : 0;
             }
 
             return value;
@@ -66,15 +66,15 @@ namespace QRgb
             {
                 if (bitI + i < data.Length)
                 {
-                    int posVal = (int)Math.Pow(2, i);
+                    int posVal = (int)Math.Pow(2, bitsPerChannel - 1 - i);
                     if (val >= posVal)
                     {
-                        data[bitI + i] = true;
+                        data[bitI + (i)] = true;
                         val -= posVal;
                     }
                     else
                     {
-                        data[bitI + i] = false;
+                        data[bitI + (i)] = false;
                     }
                 }
             }
@@ -88,7 +88,7 @@ namespace QRgb
             bitI += bitsPerChannel;
             int b = GetByteSegment(bitI, data);
 
-            int maxWithBits = (int)Math.Pow(2, bitsPerChannel - 1);
+            int maxWithBits = (int)Math.Pow(2, bitsPerChannel)-1;
             int stepMul = 255 / maxWithBits;
 
             Colour c = new Colour(r * stepMul, g * stepMul, b * stepMul);
@@ -98,7 +98,7 @@ namespace QRgb
 
         private void ConvertColourToBits(Colour c, int bitI,ref bool[] bits)
         {
-            int maxWithBits = (int)Math.Pow(2, bitsPerChannel - 1);
+            int maxWithBits = (int)Math.Pow(2, bitsPerChannel)-1;
             int stepMul = 255 / maxWithBits;
 
             int rr = (int)Math.Round((decimal)c.R / stepMul),
