@@ -47,14 +47,20 @@ namespace QRgb
             return result;
         }
 
+        private static int BiasedRound(float val, float bound = 0.2f)
+        {
+            if (val > Math.Floor(val) + bound) return (int)Math.Ceiling(val);
+            else return (int)Math.Floor(val);
+        }
+
         private void ConvertColourToBits(Colour c, int bitI, ref bool[] bits)
         {
             int maxWithBits = (int)Math.Pow(2, bitsPerChannel) - 1;
             float stepMul = 255.0f / maxWithBits;
 
-            int rr = (int)Math.Ceiling(c.R / stepMul),
-                rg = (int)Math.Ceiling(c.G / stepMul),
-                rb = (int)Math.Ceiling(c.B / stepMul);
+            int rr = BiasedRound(c.R / stepMul),
+                rg = BiasedRound(c.G / stepMul),
+                rb = BiasedRound(c.B / stepMul);
 
             SetBitSegment(rr, bitI, ref bits);
             bitI += bitsPerChannel;
@@ -87,7 +93,7 @@ namespace QRgb
             int maxWithBits = (int)Math.Pow(2, bitsPerChannel) - 1;
             float stepMul = 255.0f / maxWithBits;
 
-            Colour c = new Colour((int)Math.Ceiling(r * stepMul), (int)Math.Ceiling(g * stepMul), (int)Math.Ceiling(b * stepMul));
+            Colour c = new Colour(BiasedRound(r * stepMul), BiasedRound(g * stepMul), BiasedRound(b * stepMul));
 
             return c;
         }
@@ -183,7 +189,7 @@ namespace QRgb
 
             for (int x = 0, y = 0, i = 0; i < squareCount; i++)
             {
-                Colour c = colours[x, y];
+                Colour c = colours[y, x];
 
                 Rectangle r = new Rectangle(x * squareSize, y * squareSize, squareSize, squareSize);
 
