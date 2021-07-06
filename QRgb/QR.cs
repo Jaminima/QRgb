@@ -168,7 +168,7 @@ namespace QRgb
             {
                 Colour c = GetColour(bitI, bitArray);
 
-                colours[x, y] = c;
+                colours[y, x] = c;
 
                 x++;
                 if (x == wh) { x = 0; y++; }
@@ -214,7 +214,8 @@ namespace QRgb
             for (int x = 0, y = 0, bitI = 0; y < wh; bitI += bitStep)
             {
                 Colour c = colours[y, x];
-                ConvertColourToBits(c, bitI, ref bitData);
+                if (c!=null)
+                    ConvertColourToBits(c, bitI, ref bitData);
 
                 x++;
                 if (x == wh) { x = 0; y++; }
