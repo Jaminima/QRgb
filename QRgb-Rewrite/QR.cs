@@ -1,7 +1,7 @@
 ﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Drawing.Processing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,12 +67,26 @@ namespace QRgb
 
         public const ushort Channels = 3;
         public readonly ushort bitsPerChannel = 1;
-        public readonly int squareCount = 0, wh = 0, bitCount = 0;
+        public readonly int squareCount = 0, wh = 0;
 
         public QR(Image<Rgb24> image, ushort bitsPerChannel = 1)
         {
             float[,] edges = Processing.DetectEdges(image);
-            Processing.EdgesToPNG(edges);
+            //Processing.EdgesToPNG(edges);
+            int sqSize = Processing.DetermineSize(edges);
+
+            wh = image.Width / sqSize;
+            squareCount = wh * wh;
+            colours = new Colour[wh,wh];
+
+            sqSize = image.Width / wh;
+
+            for (int x = 0, y = 0; y < wh;)
+            {
+                colours[y, x] = Processing.GetSquare(image, edges, x, y, sqSize);
+                x++;
+                if (x == wh) { x = 0; y++; }
+            }
         }
 
         public QR(string str, ushort bitsPerChannel = 1) : this(Encoding.UTF8.GetBytes(str), bitsPerChannel)
@@ -87,7 +101,7 @@ namespace QRgb
 
             int bitStep = bitsPerChannel * Channels;
 
-            bitCount = (data.Length * 8);
+            int bitCount = (data.Length * 8);
             squareCount = (int)Math.Ceiling((decimal)bitCount / bitStep);
             wh = (int)Math.Ceiling(Math.Sqrt(squareCount));
 
@@ -111,10 +125,10 @@ namespace QRgb
 
         public void Save(string path = "./image.png", int squareSize = 1, int blackBorder = 0)
         {
-            int imgwh = (wh * squareSize) + (blackBorder/2);
+            int imgwh = (wh * squareSize) + (blackBorder / 2);
             Image<Rgb24> img = new Image<Rgb24>(imgwh, imgwh);
 
-            Pen borderPen = blackBorder > 0 ? new Pen(Color.Black, blackBorder) : new Pen(Color.Black,1);
+            Pen borderPen = blackBorder > 0 ? new Pen(Color.Black, blackBorder) : new Pen(Color.Black, 1);
 
             for (int x = 0, y = 0, i = 0; i < squareCount; i++)
             {
@@ -122,10 +136,11 @@ namespace QRgb
 
                 Rectangle r = new Rectangle(x * squareSize, y * squareSize, squareSize, squareSize);
 
-                img.Mutate(x =>{
+                img.Mutate(x =>
+                {
                     x.Fill(new Rgb24((byte)c.R, (byte)c.G, (byte)c.B), r);
                     if (blackBorder > 0) x.Draw(borderPen, r);
-                    }) ;
+                });
 
                 x++;
                 if (x == wh) { x = 0; y++; }

@@ -17,6 +17,7 @@ namespace Demo
             //}
 
             QR loaded_qR = QR.Load("./out-1-noise.png");
+            loaded_qR.Save("./out-1-noise-loaded.png", 50, 3);
         }
 
         #endregion Methods

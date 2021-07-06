@@ -10,6 +10,10 @@ namespace QRgb
         private const float MaxLinear = 255 * 3;
         private const float MaxLinearSum = MaxLinear * 5;
 
+        private const float EdgeMin = 0.8f;
+
+        private const int MinGap = 20;
+
         #endregion Fields
 
         #region Methods
@@ -47,6 +51,56 @@ namespace QRgb
             return imageEdges;
         }
 
+        public static int DetermineSize(float[,] edges)
+        {
+            int lastXEdge = 0;
+            int edgeGapSum = 0, edgeGapCount = 0;
+
+            for (int x = 0, y = 0; y < edges.GetLength(1);)
+            {
+                if (edges[y, x] > EdgeMin) 
+                {
+                    if (x - lastXEdge > MinGap)
+                    {
+                        edgeGapSum += x - lastXEdge;
+                        edgeGapCount++;
+                    }
+
+                    lastXEdge = x; 
+                }
+
+                x++;
+                if (x == edges.GetLength(0)) { x = 0; y++; lastXEdge = 0; }
+            }
+            int s = edgeGapSum / edgeGapCount;
+            return s;
+        }
+
+        public static Colour GetSquare(Image<Rgb24> image, float[,] edges, int x, int y, int sqSize)
+        {
+            Colour sumColour = new Colour();
+            int sumCount = 0;
+
+            x *= sqSize;
+            y *= sqSize;
+            for (int _x = x, _y = y; _y < y + sqSize;)
+            {
+                if (edges[_y, _x] < EdgeMin)
+                {
+                    Rgb24 c = image[_y, _x];
+                    sumColour = new Colour(sumColour.R + c.R, sumColour.G + c.G, sumColour.B + c.B);
+                    sumCount++;
+                }
+                _x++;
+                if (_x == x + sqSize) { _x = x; _y++; }
+            }
+
+            if (sumCount > 0)
+                return new Colour(sumColour.R / sumCount, sumColour.G / sumCount, sumColour.B / sumCount);
+            else
+                return new Colour(0, 0, 0);
+        }
+
         public static void EdgesToPNG(float[,] edges, string path = "./edges.png")
         {
             int h = edges.GetLength(1), w = edges.GetLength(0);
@@ -54,7 +108,7 @@ namespace QRgb
 
             for (int x = 0, y = 0; y < h;)
             {
-                image[y, x] = edges[y, x] > 0.8f ? Color.White : Color.Black;
+                image[y, x] = edges[y, x] > EdgeMin ? Color.White : Color.Black;
                 x++;
                 if (x == w) { x = 0; y++; }
             }
