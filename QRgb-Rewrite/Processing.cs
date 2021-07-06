@@ -9,7 +9,7 @@ namespace QRgb
 
         private const float EdgeMin = 0.97f;
         private const float MaxLinear = 255 * 3;
-        private const float MaxLinearSum = MaxLinear * 5;
+        private const float MaxLinearSum = MaxLinear * 1;
         private const int MinGap = 20;
 
         #endregion Fields
@@ -26,11 +26,11 @@ namespace QRgb
 
                 f += GetLinearFromPixel(image, x, y);
 
-                f += GetLinearFromPixel(image, x - 1, y);
-                f += GetLinearFromPixel(image, x + 1, y);
+                //f += GetLinearFromPixel(image, x - 1, y);
+                //f += GetLinearFromPixel(image, x + 1, y);
 
-                f += GetLinearFromPixel(image, x, y + 1);
-                f += GetLinearFromPixel(image, x, y - 1);
+                //f += GetLinearFromPixel(image, x, y + 1);
+                //f += GetLinearFromPixel(image, x, y - 1);
 
                 f /= MaxLinearSum;
 

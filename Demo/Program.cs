@@ -11,7 +11,7 @@ namespace Demo
         {
             string text = "Colour QR Codes are not very practical in the real world.... But hey ho!";
 
-            for (ushort i = 1; i < 7; i++)
+            for (ushort i = 1; i < 9; i++)
             {
                 QR qR = new QR(text, i);
 

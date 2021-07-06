@@ -50,11 +50,11 @@ namespace QRgb
         private void ConvertColourToBits(Colour c, int bitI, ref bool[] bits)
         {
             int maxWithBits = (int)Math.Pow(2, bitsPerChannel) - 1;
-            int stepMul = 255 / maxWithBits;
+            float stepMul = 255.0f / maxWithBits;
 
-            int rr = (int)Math.Ceiling((decimal)c.R / stepMul),
-                rg = (int)Math.Ceiling((decimal)c.G / stepMul),
-                rb = (int)Math.Ceiling((decimal)c.B / stepMul);
+            int rr = (int)Math.Ceiling(c.R / stepMul),
+                rg = (int)Math.Ceiling(c.G / stepMul),
+                rb = (int)Math.Ceiling(c.B / stepMul);
 
             SetBitSegment(rr, bitI, ref bits);
             bitI += bitsPerChannel;
@@ -85,9 +85,9 @@ namespace QRgb
             int b = GetByteSegment(bitI, data);
 
             int maxWithBits = (int)Math.Pow(2, bitsPerChannel) - 1;
-            int stepMul = 255 / maxWithBits;
+            float stepMul = 255.0f / maxWithBits;
 
-            Colour c = new Colour(r * stepMul, g * stepMul, b * stepMul);
+            Colour c = new Colour((int)Math.Ceiling(r * stepMul), (int)Math.Ceiling(g * stepMul), (int)Math.Ceiling(b * stepMul));
 
             return c;
         }
