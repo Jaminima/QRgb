@@ -11,7 +11,7 @@ namespace Demo
         {
             string text = "Colour QR Codes are not very practical in the real world.... But hey ho!";
 
-            for (ushort i = 1; i < 3; i++)
+            for (ushort i = 1; i < 7; i++)
             {
                 QR qR = new QR(text, i);
 
@@ -20,12 +20,12 @@ namespace Demo
                 QR loaded_QR = QR.Load($"./out-{i}.png", i);
 
                 Console.WriteLine($"Bits Per Channel {i}\n{loaded_QR.ToString()}");
-
             }
 
-            //QR loaded_qR = QR.Load("./out-2.png",2);
+            //QR loaded_qR = QR.Load("./out-3.png", 3);
             //string s = loaded_qR.ToString();
-            //loaded_qR.Save("./out-2-noise-loaded.png", 50, 3);
+            //Console.WriteLine(s);
+            //loaded_qR.Save("./out-3-noise-loaded.png", 50, 3);
         }
 
         #endregion Methods
