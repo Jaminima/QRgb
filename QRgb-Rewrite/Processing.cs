@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SixLabors.ImageSharp;
+﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Drawing.Processing;
 
 namespace QRgb
 {
     public static class Processing
     {
-        const float MaxLinear = 255 * 3;
-        const float MaxLinearSum = MaxLinear * 5;
+        #region Fields
 
-        public static float GetLinearFromColour(Rgb24 rgb)
-        {
-            return rgb.R + rgb.G + rgb.B;
-        }
+        private const float MaxLinear = 255 * 3;
+        private const float MaxLinearSum = MaxLinear * 5;
 
-        public static float GetLinearFromPixel(Image<Rgb24> image, int x, int y)
-        {
-            if (x >= 0 && y >= 0 && x < image.Width && y < image.Height)
-                return GetLinearFromColour(image[y, x]);
-            else 
-                return 0;
-        }
+        #endregion Fields
+
+        #region Methods
 
         public static float[,] DetectEdges(Image<Rgb24> image)
         {
@@ -61,7 +47,7 @@ namespace QRgb
             return imageEdges;
         }
 
-        public static void EdgesToPNG(float[,] edges, string path="./edges.png")
+        public static void EdgesToPNG(float[,] edges, string path = "./edges.png")
         {
             int h = edges.GetLength(1), w = edges.GetLength(0);
             Image<Rgb24> image = new Image<Rgb24>(h, w);
@@ -75,5 +61,20 @@ namespace QRgb
 
             image.SaveAsPng(path);
         }
+
+        public static float GetLinearFromColour(Rgb24 rgb)
+        {
+            return rgb.R + rgb.G + rgb.B;
+        }
+
+        public static float GetLinearFromPixel(Image<Rgb24> image, int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < image.Width && y < image.Height)
+                return GetLinearFromColour(image[y, x]);
+            else
+                return 0;
+        }
+
+        #endregion Methods
     }
 }
