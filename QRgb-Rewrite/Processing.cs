@@ -13,10 +13,19 @@ namespace QRgb
     public static class Processing
     {
         const float MaxLinear = 255 * 3;
+        const float MaxLinearSum = MaxLinear * 5;
 
         public static float GetLinearFromColour(Rgb24 rgb)
         {
             return rgb.R + rgb.G + rgb.B;
+        }
+
+        public static float GetLinearFromPixel(Image<Rgb24> image, int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < image.Width && y < image.Height)
+                return GetLinearFromColour(image[y, x]);
+            else 
+                return 0;
         }
 
         public static float[,] DetectEdges(Image<Rgb24> image)
@@ -25,7 +34,21 @@ namespace QRgb
 
             for (int x = 0, y = 0; y < image.Height;)
             {
-                imageEdges[y, x] = 1 - (GetLinearFromColour(image[x, y]) / MaxLinear);
+                float f = 0;
+
+                f += GetLinearFromPixel(image, x, y);
+
+                f += GetLinearFromPixel(image, x - 1, y);
+                f += GetLinearFromPixel(image, x + 1, y);
+
+                f += GetLinearFromPixel(image, x, y + 1);
+                f += GetLinearFromPixel(image, x, y - 1);
+
+                f /= MaxLinearSum;
+
+                f = 1 - f;
+
+                imageEdges[y, x] = f;
 
                 x++;
                 if (x == image.Width)
@@ -45,7 +68,7 @@ namespace QRgb
 
             for (int x = 0, y = 0; y < h;)
             {
-                image[y, x] = edges[y, x] == 1 ? Color.White : Color.Black;
+                image[y, x] = edges[y, x] > 0.8f ? Color.White : Color.Black;
                 x++;
                 if (x == w) { x = 0; y++; }
             }
