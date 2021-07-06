@@ -69,6 +69,12 @@ namespace QRgb
         public readonly ushort bitsPerChannel = 1;
         public readonly int squareCount = 0, wh = 0, bitCount = 0;
 
+        public QR(Image<Rgb24> image, ushort bitsPerChannel = 1)
+        {
+            float[,] edges = Processing.DetectEdges(image);
+            Processing.EdgesToPNG(edges);
+        }
+
         public QR(string str, ushort bitsPerChannel = 1) : this(Encoding.UTF8.GetBytes(str), bitsPerChannel)
         {
         }
@@ -96,6 +102,11 @@ namespace QRgb
                 x++;
                 if (x == wh) { x = 0; y++; }
             }
+        }
+
+        public static QR Load(string path = "./image.png")
+        {
+            return new QR(Image.Load<Rgb24>(path));
         }
 
         public void Save(string path = "./image.png", int squareSize = 1, int blackBorder = 0)
