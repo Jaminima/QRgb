@@ -54,7 +54,7 @@ namespace QRgb
             int lastXEdge = 0;
             int edgeGapSum = 0, edgeGapCount = 0;
 
-            for (int x = 0, y = 0; y < edges.GetLength(1);)
+            for (int x = 0, y = 0; y < edges.GetLength(0);)
             {
                 if (edges[y, x] > EdgeMin)
                 {
@@ -68,7 +68,7 @@ namespace QRgb
                 }
 
                 x++;
-                if (x == edges.GetLength(0)) { x = 0; y++; lastXEdge = 0; }
+                if (x == edges.GetLength(1)) { x = 0; y++; lastXEdge = 0; }
             }
             int s = edgeGapSum / edgeGapCount;
             return s;
@@ -76,8 +76,8 @@ namespace QRgb
 
         public static void EdgesToPNG(float[,] edges, string path = "./edges.png")
         {
-            int h = edges.GetLength(1), w = edges.GetLength(0);
-            Image<Rgb24> image = new Image<Rgb24>(h, w);
+            int h = edges.GetLength(0), w = edges.GetLength(1);
+            Image<Rgb24> image = new Image<Rgb24>(w, h);
 
             for (int x = 0, y = 0; y < h;)
             {
